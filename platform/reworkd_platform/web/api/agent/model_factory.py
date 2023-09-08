@@ -31,10 +31,20 @@ def create_model(
     model_settings: ModelSettings,
     user: UserBase,
     streaming: bool = False,
-    force_model: Optional[LLM_Model] = None,
-) -> WrappedChat:
-    use_azure = (
-        not model_settings.custom_api_key and "azure" in settings.openai_api_base
+    azure: bool = False,
+) -> WrappedChatOpenAI:
+    if (
+        not model_settings.custom_api_key
+        and model_settings.model == "openai/gpt-3.5-turbo"
+        and azure
+        and settings.azure_openai_enabled
+    ):
+        return _create_azure_model(model_settings, user, streaming)
+
+    api_key = model_settings.custom_api_key or rotate_keys(
+        gpt_3_key=settings.openai_api_key,
+        gpt_4_key=settings.secondary_openai_api_key,
+        model=model_settings.model,
     )
 
     llm_model = force_model or model_settings.model
@@ -91,7 +101,10 @@ def get_base_and_headers(
             "Helicone-OpenAI-Api-Base": settings_.openai_api_base,
         }
         if use_helicone
-        else None
+        else {
+            "HTTP-Referer": "http://localhost:3000",
+            "X-Title": "AgentGPT",
+        }
     )
 
     return base, headers, use_helicone

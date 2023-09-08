@@ -34,6 +34,12 @@ async def get_replicate_image(input_str: str) -> str:
 
 # Use AI to generate an Image based on a prompt
 async def get_open_ai_image(input_str: str) -> str:
+    api_key = rotate_keys(
+        gpt_3_key=settings.openai_api_key,
+        gpt_4_key=settings.secondary_openai_api_key,
+        model="openai/gpt-3.5-turbo",
+    )
+
     response = openai.Image.create(
         api_key=settings.openai_api_key,
         prompt=input_str,

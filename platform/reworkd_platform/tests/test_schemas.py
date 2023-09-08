@@ -13,6 +13,10 @@ from reworkd_platform.schemas.agent import ModelSettings
             "language": "french",
         },
         {
+            "model": "meta-llama/Llama-2-70b-chat-hf",
+            "max_tokens": 3000,
+        },
+        {
             "model": "gpt-3.5-turbo",
             "max_tokens": 3000,
         },
@@ -24,8 +28,8 @@ from reworkd_platform.schemas.agent import ModelSettings
 )
 def test_model_settings_valid(settings):
     result = ModelSettings(**settings)
-    assert result.model == settings.get("model", "gpt-3.5-turbo")
-    assert result.max_tokens == settings.get("max_tokens", 500)
+    assert result.model == settings.get("model", "meta-llama/Llama-2-70b-chat-hf")
+    assert result.max_tokens == settings.get("max_tokens", 4000)
     assert result.temperature == settings.get("temperature", 0.9)
     assert result.language == settings.get("language", "English")
 
@@ -55,7 +59,7 @@ def test_model_settings_invalid(settings):
 
 def test_model_settings_default():
     settings = ModelSettings(**{})
-    assert settings.model == "gpt-3.5-turbo"
+    assert settings.model == "meta-llama/Llama-2-70b-chat-hf"
     assert settings.temperature == 0.9
-    assert settings.max_tokens == 500
+    assert settings.max_tokens == 4000
     assert settings.language == "English"

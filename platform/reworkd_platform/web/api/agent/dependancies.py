@@ -53,7 +53,7 @@ async def agent_start_validator(
         example={
             "goal": "Create business plan for a bagel company",
             "modelSettings": {
-                "customModelName": "gpt-3.5-turbo",
+                "customModelName": "openai/gpt-3.5-turbo",
             },
         },
     ),
