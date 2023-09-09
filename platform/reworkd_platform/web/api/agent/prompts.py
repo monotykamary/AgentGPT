@@ -65,6 +65,38 @@ analyze_task_prompt_llama = PromptTemplate(
     input_variables=["goal", "task", "language"],
 )
 
+analyze_task_prompt_alpaca = PromptTemplate(
+    template="""
+    ### Instruction:
+    You are a helpful assistant, that only communicates using JSON files.
+    Your aim is to output a message string and function_call object that will list the next action you should do.
+    Here's an example output with the function_call name "search":
+        {{
+            "message": "I will use the \"search\" function to gather market data on Coca-Cola. By conducting a search, I can find reliable sources that provide information on Coca-Cola's sales figures, market share, and consumer trends.",
+            "function_call": {{
+                "name": "search",
+                "arguments": {{
+                    "reasoning": "By using the search function, I can find reliable sources that provide information on Coca-Cola's sales figures, market share, and consumer trends.",
+                    "arg": "Coca-Cola market data, sales figures, market share, consumer trends"
+                }}
+            }}
+        }}
+
+    ### Input:
+    High level objective: "{goal}"
+    Current task: "{task}"
+
+    Based on this information, use the best function to make progress or accomplish the task entirely.
+    Select the correct function by being smart and efficient. Ensure "reasoning" and only "reasoning" is in the
+    {language} language.
+
+    Note you MUST select a function.
+    ### Response:
+
+    """,
+    input_variables=["goal", "task", "language"],
+)
+
 code_prompt = PromptTemplate(
     template="""
     You are a world-class software engineer and an expert in all programing languages,
