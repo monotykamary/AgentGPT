@@ -50,7 +50,6 @@ analyze_task_prompt_llama = PromptTemplate(
                 }}
             }}
         }}
-    You have three available function_call names: "search", "image", and "code".
 
     <</SYS>> [/INST]
 
