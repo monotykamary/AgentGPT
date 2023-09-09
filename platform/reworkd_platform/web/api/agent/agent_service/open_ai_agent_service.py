@@ -1,3 +1,4 @@
+import json
 from typing import List, Optional
 
 from fastapi.responses import StreamingResponse as FastAPIStreamingResponse
@@ -24,6 +25,7 @@ from reworkd_platform.web.api.agent.helpers import (
 from reworkd_platform.web.api.agent.model_factory import WrappedChatOpenAI
 from reworkd_platform.web.api.agent.prompts import (
     analyze_task_prompt,
+    analyze_task_prompt_llama,
     chat_prompt,
     create_tasks_prompt,
     start_goal_prompt,
@@ -103,6 +105,13 @@ class OpenAIAgentService(AgentService):
             language=self.settings.language,
         )
 
+        if 'llama' in self.model.model_name:
+            prompt = analyze_task_prompt_llama.format_prompt(
+                goal=goal,
+                task=task,
+                language=self.settings.language,
+            )
+
         self.token_service.calculate_max_tokens(
             self.model,
             prompt.to_string(),
@@ -119,6 +128,13 @@ class OpenAIAgentService(AgentService):
 
         function_call = message.additional_kwargs.get("function_call", {})
         completion = function_call.get("arguments", "")
+
+        if 'llama' in self.model.model_name:
+           content = message.content[message.content.index("{"):]
+           payload = json.loads(content)
+           function_call = payload.get('function_call')
+           completionDict = function_call.get('arguments')
+           completion = json.dumps(completionDict)
 
         try:
             pydantic_parser = PydanticOutputParser(pydantic_object=AnalysisArguments)
