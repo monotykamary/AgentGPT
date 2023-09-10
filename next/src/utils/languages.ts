@@ -27,6 +27,7 @@ export const availableLanguages: Language[] = [
   { code: "ro", name: "Română", flag: "🇷🇴" },
   { code: "sk", name: "Slovenčina", flag: "🇸🇰" },
   { code: "tr", name: "Türkçe", flag: "🇹🇷" },
+  { code: "vi", name: "Tiếng Việt", flag: "🇻🇳" },
 ];
 
 export const languages: Language[] = availableLanguages.sort((a, b) =>
