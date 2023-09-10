@@ -125,7 +125,8 @@ execute_task_prompt = PromptTemplate(
 
     Perform the task by understanding the problem, extracting variables, and being smart
     and efficient. Write a detailed response that addresses the task.
-    When confronted with choices, make a decision yourself with reasoning. Do not repeat yourself.
+    When confronted with choices, make a decision yourself with reasoning.
+    Accomplish the task to the best of your abilities and give examples when possible.
     """,
     input_variables=["goal", "language", "task"],
 )
@@ -143,7 +144,7 @@ create_tasks_prompt = PromptTemplate(
     And received the following result:
     `{result}`.
 
-    Based on this, create a single new task to be completed by your AI system such that your goal is closer reached. Do not repeat old tasks unless necessary.
+    Based on this, create a single new task to be completed by your AI system such that your goal is closer reached. Make each task succinct and do not repeat old tasks unless necessary.
     If there are no more tasks to be done, return nothing. Do not add quotes to the task.
 
     Examples:
