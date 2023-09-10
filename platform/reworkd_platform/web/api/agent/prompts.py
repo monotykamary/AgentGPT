@@ -37,11 +37,11 @@ analyze_task_prompt_llama = PromptTemplate(
     template="""
     [INST] <<SYS>>
 
-    You are a helpful assistant, that only communicates using JSON files.
+    You are a helpful assistant, that only communicates in strict JSON (always escape quotes).
     Your aim is to output a message string and function_call object that will list the next action you should do.
     Here's an example output with the function_call name "search":
         {{
-            "message": "I will use the \"search\" function to gather market data on Coca-Cola. By conducting a search, I can find reliable sources that provide information on Coca-Cola's sales figures, market share, and consumer trends.",
+            "message": "I will use the search function to gather market data on Coca-Cola. By conducting a search, I can find reliable sources that provide information on Coca-Cola's sales figures, market share, and consumer trends.",
             "function_call": {{
                 "name": "search",
                 "arguments": {{
@@ -50,6 +50,7 @@ analyze_task_prompt_llama = PromptTemplate(
                 }}
             }}
         }}
+    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
 
     <</SYS>> [/INST]
 
@@ -68,11 +69,11 @@ analyze_task_prompt_llama = PromptTemplate(
 analyze_task_prompt_alpaca = PromptTemplate(
     template="""
     ### Instruction:
-    You are a helpful assistant, that only communicates using JSON files.
+    You are a helpful assistant, that only communicates in strict JSON (always escape quotes).
     Your aim is to output a message string and function_call object that will list the next action you should do.
     Here's an example output with the function_call name "search":
         {{
-            "message": "I will use the \"search\" function to gather market data on Coca-Cola. By conducting a search, I can find reliable sources that provide information on Coca-Cola's sales figures, market share, and consumer trends.",
+            "message": "I will use the search function to gather market data on Coca-Cola. By conducting a search, I can find reliable sources that provide information on Coca-Cola's sales figures, market share, and consumer trends.",
             "function_call": {{
                 "name": "search",
                 "arguments": {{
@@ -81,6 +82,7 @@ analyze_task_prompt_alpaca = PromptTemplate(
                 }}
             }}
         }}
+    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
 
     ### Input:
     High level objective: "{goal}"
@@ -122,8 +124,8 @@ execute_task_prompt = PromptTemplate(
     the following overall objective `{goal}` and the following sub-task, `{task}`.
 
     Perform the task by understanding the problem, extracting variables, and being smart
-    and efficient. Write a detailed response that address the task.
-    When confronted with choices, make a decision yourself with reasoning.
+    and efficient. Write a detailed response that addresses the task.
+    When confronted with choices, make a decision yourself with reasoning. Do not repeat yourself.
     """,
     input_variables=["goal", "language", "task"],
 )
@@ -141,7 +143,7 @@ create_tasks_prompt = PromptTemplate(
     And received the following result:
     `{result}`.
 
-    Based on this, create a single new task to be completed by your AI system such that your goal is closer reached.
+    Based on this, create a single new task to be completed by your AI system such that your goal is closer reached. Do not repeat old tasks unless necessary.
     If there are no more tasks to be done, return nothing. Do not add quotes to the task.
 
     Examples:

@@ -1,7 +1,7 @@
 import { ENGLISH } from "./languages";
 import type { ModelSettings } from "../types";
 
-export const [CLAUDE2, CODE_LLAMA2_34B, LLAMA2_13B, LLAMA2_70B, GPT_35_TURBO, GPT_35_TURBO_16K, GPT_4, PALM2, PALM2_CODE, HERMES_LLAMA2_13B] = [
+export const [CLAUDE2, CODE_LLAMA2_34B, LLAMA2_13B, LLAMA2_70B, GPT_35_TURBO, GPT_35_TURBO_16K, GPT_4, PALM2, PALM2_CODE, HERMES_LLAMA2_13B, AIROBOROS_70B] = [
   "anthropic/claude-2" as const,
   "meta-llama/codellama-34b-instruct" as const,
   "meta-llama/llama-2-13b-chat" as const,
@@ -12,6 +12,7 @@ export const [CLAUDE2, CODE_LLAMA2_34B, LLAMA2_13B, LLAMA2_70B, GPT_35_TURBO, GP
   "google/palm-2-chat-bison" as const,
   "google/palm-2-codechat-bison" as const,
   "nousresearch/nous-hermes-llama2-13b" as const,
+  "jondurbin/airoboros-l2-70b-2.1" as const,
 ];
 export const GPT_MODEL_NAMES = [GPT_35_TURBO, GPT_4];
 

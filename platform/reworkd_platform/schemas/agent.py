@@ -16,6 +16,7 @@ LLM_Model = Literal[
     "google/palm-2-chat-bison",
     "google/palm-2-codechat-bison",
     "nousresearch/nous-hermes-llama2-13b",
+    "jondurbin/airoboros-l2-70b-2.1",
 ]
 Loop_Step = Literal[
     "start",
@@ -36,6 +37,7 @@ LLM_MODEL_MAX_TOKENS: Dict[LLM_Model, int] = {
     "google/palm-2-chat-bison": 8000,
     "google/palm-2-codechat-bison": 8000,
     "nousresearch/nous-hermes-llama2-13b": 4000,
+    "jondurbin/airoboros-l2-70b-2.1": 4000,
 }
 
 

@@ -106,14 +106,14 @@ class OpenAIAgentService(AgentService):
             language=self.settings.language,
         )
 
-        if 'llama' in self.model.model_name:
+        if any(llama in self.model.model_name for llama in ['airoboros', 'llama']):
             prompt = analyze_task_prompt_llama.format_prompt(
                 goal=goal,
                 task=task,
                 language=self.settings.language,
             )
 
-        if any(alpaca_model in self.model.model_name for alpaca_model in ['hermes', 'alpaca']):
+        if any(alpaca in self.model.model_name for alpaca in ['hermes', 'alpaca']):
             prompt = analyze_task_prompt_alpaca.format_prompt(
                 goal=goal,
                 task=task,
@@ -134,6 +134,7 @@ class OpenAIAgentService(AgentService):
             callbacks=self.callbacks,
         )
 
+        logger.info(f"message={message.content}")
         function_call = message.additional_kwargs.get("function_call", {})
         completion = function_call.get("arguments", "")
 
