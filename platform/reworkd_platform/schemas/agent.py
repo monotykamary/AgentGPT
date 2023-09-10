@@ -13,10 +13,15 @@ LLM_Model = Literal[
     "openai/gpt-3.5-turbo",
     "openai/gpt-3.5-turbo-16k",
     "openai/gpt-4",
+    "openai/gpt-4-32k",
     "google/palm-2-chat-bison",
     "google/palm-2-codechat-bison",
     "nousresearch/nous-hermes-llama2-13b",
     "jondurbin/airoboros-l2-70b-2.1",
+    "meta-llama/Llama-2-7b-chat-hf",
+    "meta-llama/Llama-2-13b-chat-hf",
+    "meta-llama/Llama-2-70b-chat-hf",
+    "codellama/CodeLlama-34b-Instruct-hf",
 ]
 Loop_Step = Literal[
     "start",
@@ -32,18 +37,24 @@ LLM_MODEL_MAX_TOKENS: Dict[LLM_Model, int] = {
     "meta-llama/llama-2-13b-chat": 4000,
     "meta-llama/llama-2-70b-chat": 4000,
     "openai/gpt-3.5-turbo": 4000,
-    "openai/gpt-3.5-turbo-16k": 16000,
+    "openai/gpt-3.5-turbo-16k": 16_000,
     "openai/gpt-4": 8000,
+    "openai/gpt-4-32k": 32_000,
     "google/palm-2-chat-bison": 8000,
     "google/palm-2-codechat-bison": 8000,
     "nousresearch/nous-hermes-llama2-13b": 4000,
     "jondurbin/airoboros-l2-70b-2.1": 4000,
+    "meta-llama/Llama-2-7b-chat-hf": 4000,
+    "meta-llama/Llama-2-13b-chat-hf": 4000,
+    "meta-llama/Llama-2-70b-chat-hf": 4000,
+    "codellama/CodeLlama-34b-Instruct-hf": 4000,
 }
 
 
 class ModelSettings(BaseModel):
     model: LLM_Model = Field(default="openai/gpt-3.5-turbo")
     custom_api_key: Optional[str] = Field(default=None)
+    custom_api_base: Optional[str] = Field(default=None)
     temperature: float = Field(default=0.9, ge=0.0, le=1.0)
     max_tokens: int = Field(default=4000, ge=0)
     language: str = Field(default="English")

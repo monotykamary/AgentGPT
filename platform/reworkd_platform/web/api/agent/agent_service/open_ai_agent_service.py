@@ -134,7 +134,10 @@ class OpenAIAgentService(AgentService):
             callbacks=self.callbacks,
         )
 
-        logger.info(f"message={message.content}")
+        logger.info(f"""
+            message={message.content}
+            max_tokens={self.model.max_tokens}
+        """)
         function_call = message.additional_kwargs.get("function_call", {})
         completion = function_call.get("arguments", "")
 

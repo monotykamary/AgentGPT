@@ -19,6 +19,7 @@ export const toApiModelSettings = (modelSettings: ModelSettings, session?: Sessi
     temperature: modelSettings.customTemperature,
     max_tokens: allowCustomization ? modelSettings.maxTokens : 4000,
     custom_api_key: modelSettings.customApiKey,
+    custom_api_base: modelSettings.customApiBase,
   };
 };
 

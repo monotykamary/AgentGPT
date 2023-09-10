@@ -1,13 +1,9 @@
-import axios from "axios";
-import clsx from "clsx";
 import type {GetStaticProps} from "next";
 import {useTranslation} from "next-i18next";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
-import React, {useState} from "react";
+import React, {useMemo} from "react";
 import {
-  FaCheckCircle,
   FaCoins,
-  FaExclamationCircle,
   FaGlobe,
   FaKey,
   FaRobot,
@@ -17,8 +13,8 @@ import {
 
 import nextI18NextConfig from "../../next-i18next.config.js";
 import {useAuth} from "../hooks/useAuth";
-import type {LLMModel} from "../hooks/useModels";
-import {useModels} from "../hooks/useModels";
+import type {LLMHost, LLMModel} from "../hooks/useModels";
+import {llmHosts, useModels} from "../hooks/useModels";
 import {useSettings} from "../hooks/useSettings";
 import DashboardLayout from "../layout/dashboard";
 import type {GPTModelNames} from "../types";
@@ -32,42 +28,18 @@ const SettingsPage = () => {
   const [t] = useTranslation("settings");
   const {settings, updateSettings, updateLangauge} = useSettings();
   const {session} = useAuth({protectedRoute: true});
-  const {models, getModel} = useModels();
-
-  const [isApiKeyValid, setIsApiKeyValid] = useState<boolean | undefined>(undefined);
-
-  const validateApiKey = async () => {
-    try {
-      await axios.get("https://api.openai.com/v1/engines", {
-        headers: {
-          Authorization: `Bearer ${settings.customApiKey}`,
-        },
-      });
-
-      setIsApiKeyValid(true);
-    } catch (error) {
-      setIsApiKeyValid(false);
-    }
-  };
+  const {hosts, getModel, getHost} = useModels();
 
   const disableAdvancedSettings = !session?.user;
-  const model = getModel(settings.customModelName) || {
-    name: settings.customModelName,
-    max_tokens: 2000,
-    has_access: true,
-  };
+  const host = getHost(settings.customApiBase) ?? llmHosts[0]!;
+  const model = useMemo(() => getModel(host, settings.customModelName) ?? host.models[0]!, [host, settings]) ;
 
   const updateModel = (model: LLMModel) => {
     if (settings.maxTokens > model.max_tokens) {
       updateSettings("maxTokens", model.max_tokens);
     }
-
     updateSettings("customModelName", model.name as GPTModelNames);
   };
-
-  const onDisconnect = () => {
-    return Promise.resolve()
-  }
 
   return (
     <DashboardLayout>
@@ -88,6 +60,19 @@ const SettingsPage = () => {
                 items={languages}
                 icon={<FaGlobe/>}
               />
+
+              <Combo<LLMHost>
+                label="API Host"
+                value={host}
+                valueMapper={(e) => e.url}
+                onChange={(e) => {
+                  updateSettings("customApiBase", e.url);
+                  updateModel(model);
+                }}
+                items={hosts}
+                icon={<FaKey/>}
+              />
+
               <Input
                 label="API Key"
                 name="api-key"
@@ -100,29 +85,13 @@ const SettingsPage = () => {
                     </a>
                   </span>
                 }
-                type="text"
+                type="password"
                 value={settings.customApiKey}
                 onChange={(e) => {
-                  setIsApiKeyValid(undefined);
                   updateSettings("customApiKey", e.target.value);
                 }}
                 icon={<FaKey/>}
                 className="flex-grow-1 mr-2"
-                right={
-                  <Button
-                    onClick={validateApiKey}
-                    className={clsx(
-                      "transition-400 h-11 w-16 rounded text-sm text-white duration-200",
-                      isApiKeyValid === undefined && "bg-gray-500 hover:bg-gray-700",
-                      isApiKeyValid === true && "bg-green-500 hover:bg-green-700",
-                      isApiKeyValid === false && "bg-red-500 hover:bg-red-700"
-                    )}
-                  >
-                    {isApiKeyValid === undefined && "Test"}
-                    {isApiKeyValid === true && <FaCheckCircle/>}
-                    {isApiKeyValid === false && <FaExclamationCircle/>}
-                  </Button>
-                }
               />
             </div>
 
@@ -135,7 +104,7 @@ const SettingsPage = () => {
                     value={model}
                     valueMapper={(e) => e.name}
                     onChange={updateModel}
-                    items={models}
+                    items={host.models}
                     icon={<FaRobot/>}
                   />
                   <Input
@@ -178,7 +147,7 @@ const SettingsPage = () => {
                     onChange={(e) => updateSettings("maxTokens", parseFloat(e.target.value))}
                     attributes={{
                       min: 200,
-                      max: model.max_tokens,
+                      max: model!.max_tokens,
                       step: 100,
                     }}
                     helpText={t("CONTROL_MAXIMUM_OF_TOKENS_DESCRIPTION")}

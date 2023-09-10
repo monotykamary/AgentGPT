@@ -33,6 +33,7 @@ class GenericLLMAgent(Block):
 
 async def execute_prompt(prompt: str) -> str:
     openai.api_key = settings.openai_api_key
+    openai.api_base = settings.openai_api_base
 
     response = await openai.ChatCompletion.acreate(
         model="openai/gpt-3.5-turbo",

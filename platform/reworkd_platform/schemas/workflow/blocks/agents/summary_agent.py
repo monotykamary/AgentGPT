@@ -69,6 +69,7 @@ class SummaryAgent(Block):
 
     def name_table(self, table: str) -> str:
         openai.api_key = settings.openai_api_key
+        openai.api_base = settings.openai_api_base
 
         prompt = f"""
         Write a title for the table that is less than 9 words: {table}

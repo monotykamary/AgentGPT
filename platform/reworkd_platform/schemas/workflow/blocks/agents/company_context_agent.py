@@ -33,6 +33,7 @@ class CompanyContextAgent(Block):
 
 async def execute_prompt(company: str) -> str:
     openai.api_key = settings.openai_api_key
+    openai.api_base = settings.openai_api_base
 
     prompt = f"""
     Write a one-sentence description of "{company}".
