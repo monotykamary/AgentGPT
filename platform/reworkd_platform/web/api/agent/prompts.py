@@ -28,6 +28,8 @@ analyze_task_prompt = PromptTemplate(
     Select the correct function by being smart and efficient. Ensure "reasoning" and only "reasoning" is in the
     {language} language.
 
+    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
+    Conclude once you believe finishing the current task achieves the high level objective.
     Note you MUST select a function.
     """,
     input_variables=["goal", "task", "language"],
@@ -50,7 +52,6 @@ analyze_task_prompt_llama = PromptTemplate(
                 }}
             }}
         }}
-    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
 
     <</SYS>> [/INST]
 
@@ -61,6 +62,8 @@ analyze_task_prompt_llama = PromptTemplate(
     Select the correct function by being smart and efficient. Ensure "reasoning" and only "reasoning" is in the
     {language} language.
 
+    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
+    Conclude once you believe finishing the current task achieves the high level objective.
     Note you MUST select a function.
     """,
     input_variables=["goal", "task", "language"],
@@ -82,7 +85,6 @@ analyze_task_prompt_alpaca = PromptTemplate(
                 }}
             }}
         }}
-    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
 
     ### Input:
     High level objective: "{goal}"
@@ -92,6 +94,8 @@ analyze_task_prompt_alpaca = PromptTemplate(
     Select the correct function by being smart and efficient. Ensure "reasoning" and only "reasoning" is in the
     {language} language.
 
+    You have access to the following functions: "search", "code", "image", "reason", and "conclude".
+    Conclude once you believe finishing the current task achieves the high level objective.
     Note you MUST select a function.
     ### Response:
 
@@ -144,7 +148,7 @@ create_tasks_prompt = PromptTemplate(
     And received the following result:
     `{result}`.
 
-    Based on this, create a single new task to be completed by your AI system such that your goal is closer reached. Make each task succinct and do not repeat old tasks unless necessary.
+    Based on this, create a single new task (between 1 to 3 sentences) to be completed by your AI system such that your goal is closer reached. Do not recreate completed tasks. Conclude once you have completed 5 tasks.
     If there are no more tasks to be done, return nothing. Do not add quotes to the task.
 
     Examples:

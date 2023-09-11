@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from loguru import logger
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse as FastAPIStreamingResponse
 from pydantic import BaseModel

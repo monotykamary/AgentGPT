@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { createSelectors } from "./helpers";
 import type { ModelSettings } from "../types";
-import { getDefaultModelSettings } from "../utils/constants";
+import { LLAMA2_13B_AS, getDefaultModelSettings } from "../utils/constants";
 
 const resetters: (() => void)[] = [];
 
@@ -42,7 +42,7 @@ export const useModelSettingsStore = createSelectors(
         partialize: (state) => ({
           modelSettings: {
             ...state.modelSettings,
-            customModelName: "openai/gpt-3.5-turbo",
+            customModelName: LLAMA2_13B_AS,
             maxTokens: Math.min(state.modelSettings.maxTokens, 4000),
           },
         }),

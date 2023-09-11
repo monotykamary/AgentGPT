@@ -34,7 +34,7 @@ const LeftSidebar = ({ show, setShow }: DisplayProps) => {
           alt="Reworkd AI"
           className=" ml-2 invert dark:invert-0"
         />
-        <h1 className="text-color-primary ml-2 font-medium">Reworkd</h1>
+        <h1 className="text-color-primary ml-2 font-medium">monoAgent</h1>
         <button
           className="neutral-button-primary ml-auto rounded-md border-none transition-all"
           onClick={() => setShow(!show)}
@@ -70,8 +70,8 @@ const LeftSidebar = ({ show, setShow }: DisplayProps) => {
         {userAgents.map((agent, index) => (
           <DrawerItemButton
             key={`${index}-${agent.name}`}
-            className="flex w-full rounded-md p-2 text-sm font-semibold"
-            text={agent.name}
+            className="flex w-full rounded-md p-2 text-sm font-semibold truncate text-ellipsis text-clip"
+            text={agent.goal}
             onClick={() => void router.push(`/agent?id=${agent.id}`)}
           />
         ))}

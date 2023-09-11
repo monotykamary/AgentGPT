@@ -29,8 +29,8 @@ export const getDefaultModelSettings = (): ModelSettings => {
     customApiKey: "",
     customApiBase: "",
     language: ENGLISH,
-    customModelName: GPT_35_TURBO,
-    customTemperature: 0.8,
+    customModelName: LLAMA2_13B_AS,
+    customTemperature: 0.7,
     customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
     maxTokens: 4000,
   };

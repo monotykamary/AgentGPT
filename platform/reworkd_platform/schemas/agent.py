@@ -52,7 +52,7 @@ LLM_MODEL_MAX_TOKENS: Dict[LLM_Model, int] = {
 
 
 class ModelSettings(BaseModel):
-    model: LLM_Model = Field(default="openai/gpt-3.5-turbo")
+    model: LLM_Model = Field(default="meta-llama/Llama-2-13b-chat-hf")
     custom_api_key: Optional[str] = Field(default=None)
     custom_api_base: Optional[str] = Field(default=None)
     temperature: float = Field(default=0.9, ge=0.0, le=1.0)

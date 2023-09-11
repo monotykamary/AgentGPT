@@ -43,7 +43,6 @@ from reworkd_platform.web.api.agent.tools.utils import summarize
 from reworkd_platform.web.api.errors import OpenAIError
 from reworkd_platform.web.api.memory.memory import AgentMemory
 
-
 class OpenAIAgentService(AgentService):
     def __init__(
         self,
@@ -211,6 +210,11 @@ class OpenAIAgentService(AgentService):
         tasks = [completion] if completion not in previous_tasks else []
 
         unique_tasks = []
+
+        # end early to avoid hallucination and allow for user supplied tasks
+        if len(previous_tasks) >= 5:
+            return unique_tasks
+
         with self.agent_memory as memory:
             for task in tasks:
                 similar_tasks = memory.get_similar_tasks(task)
