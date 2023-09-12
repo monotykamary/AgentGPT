@@ -9,7 +9,7 @@ start_goal_prompt = PromptTemplate(
     complete plan.\n\n You have the following objective "{goal}". Create a list of step
     by step actions to accomplish the goal. Use at most 4 steps.
 
-    Return the response as a formatted array of strings that can be used in JSON.parse()
+    Return the response as a formatted array of strings that can be used in JSON.parse().
 
     Examples:
     ["Search the web for NBA news relating to Stephen Curry", "Write a report on the financial state of Nike"]
@@ -124,9 +124,11 @@ code_prompt = PromptTemplate(
 )
 
 execute_task_prompt = PromptTemplate(
-    template="""Answer in the "{language}" language. Given
-    the following overall objective `{goal}` and the following sub-task, `{task}`.
+    template="""
+    Answer in the "{language}" language. Reply in a clinical, unbiased, and journalistic tone.
+    Given the following overall objective `{goal}` and the following sub-task, `{task}`.
 
+    Provide no information about who you are and focus on executing the task.
     Perform the task by understanding the problem, extracting variables, and being smart
     and efficient. Write a detailed response that addresses the task.
     When confronted with choices, make a decision yourself with reasoning.
@@ -136,7 +138,9 @@ execute_task_prompt = PromptTemplate(
 )
 
 create_tasks_prompt = PromptTemplate(
-    template="""You are an AI task creation agent. You must answer in the "{language}"
+    template="""
+    You are an AI task creation agent. Reply in a clinical tone.
+    You must answer in the "{language}"
     language. You have the following objective `{goal}`.
 
     You have the following incomplete tasks:
@@ -148,14 +152,78 @@ create_tasks_prompt = PromptTemplate(
     And received the following result:
     `{result}`.
 
-    Based on this, create a single new task (between 1 to 3 sentences) to be completed by your AI system such that your goal is closer reached. Do not recreate completed tasks. Conclude once you have completed 5 tasks.
+    Provide no information about who you are and focus on creating the task.
+    Based on this, create a single new task (at most 60 words) to be completed by your AI system such that your goal is closer reached. Do not recreate completed tasks. Conclude once you have completed 5 tasks.
     If there are no more tasks to be done, return nothing. Do not add quotes to the task.
 
     Examples:
     Search the web for NBA news
     Create a function to add a new vertex with a specified weight to the digraph.
     Search for any additional information on Bertie W.
-    ""
+    """,
+    input_variables=["goal", "language", "tasks", "lastTask", "result"],
+)
+
+create_tasks_prompt_llama = PromptTemplate(
+    template="""
+    [INST] <<SYS>>
+
+    You are an AI task creation agent. Reply in a clinical tone.
+    You must answer in the "{language}"
+    language. You have the following objective `{goal}`.
+
+    You have the following incomplete tasks:
+    `{tasks}`
+
+    You just completed the following task:
+    `{lastTask}`
+
+    And received the following result:
+    `{result}`.
+
+    Provide no information about who you are and focus on creating the task.
+    Based on this, create a single new task (at most 60 words) to be completed by your AI system such that your goal is closer reached. Do not recreate completed tasks. Conclude once you have completed 5 tasks.
+    If there are no more tasks to be done, return nothing. Do not add quotes to the task.
+
+    Examples:
+    Search the web for NBA news
+    Create a function to add a new vertex with a specified weight to the digraph.
+    Search for any additional information on Bertie W.
+
+    <</SYS>> [/INST]
+    """,
+    input_variables=["goal", "language", "tasks", "lastTask", "result"],
+)
+
+create_tasks_prompt_alpaca = PromptTemplate(
+    template="""
+    ### Instruction:
+    You are an AI task creation agent. Reply in a clinical tone.
+    You must answer in the "{language}"
+    language.
+
+    Provide no information about who you are and focus on creating the task.
+    Based on this, create a single new task (at most 60 words) to be completed by your AI system such that your goal is closer reached. Do not recreate completed tasks. Conclude once you have completed 5 tasks.
+    If there are no more tasks to be done, return nothing. Do not add quotes to the task.
+
+    Examples:
+    Search the web for NBA news
+    Create a function to add a new vertex with a specified weight to the digraph.
+    Search for any additional information on Bertie W.
+
+    ### Input:
+    You have the following objective `{goal}`.
+
+    You have the following incomplete tasks:
+    `{tasks}`
+
+    You just completed the following task:
+    `{lastTask}`
+
+    And received the following result:
+    `{result}`.
+
+    ### Response:
     """,
     input_variables=["goal", "language", "tasks", "lastTask", "result"],
 )

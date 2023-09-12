@@ -29,6 +29,8 @@ from reworkd_platform.web.api.agent.prompts import (
     analyze_task_prompt_alpaca,
     chat_prompt,
     create_tasks_prompt,
+    create_tasks_prompt_llama,
+    create_tasks_prompt_alpaca,
     start_goal_prompt,
 )
 from reworkd_platform.web.api.agent.task_output_parser import TaskOutputParser
@@ -189,6 +191,16 @@ class OpenAIAgentService(AgentService):
         prompt = ChatPromptTemplate.from_messages(
             [SystemMessagePromptTemplate(prompt=create_tasks_prompt)]
         )
+
+        if any(llama in self.model.model_name for llama in ['airoboros', 'llama']):
+            prompt = ChatPromptTemplate.from_messages(
+                [SystemMessagePromptTemplate(prompt=create_tasks_prompt_llama)]
+            )
+
+        if any(alpaca in self.model.model_name for alpaca in ['hermes', 'alpaca']):
+            prompt = ChatPromptTemplate.from_messages(
+                [SystemMessagePromptTemplate(prompt=create_tasks_prompt_alpaca)]
+            )
 
         args = {
             "goal": goal,
