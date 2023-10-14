@@ -29,7 +29,7 @@ export const getDefaultModelSettings = (): ModelSettings => {
     customApiKey: "",
     customApiBase: "",
     language: ENGLISH,
-    customModelName: LLAMA2_13B_AS,
+    customModelName: HERMES_LLAMA2_13B,
     customTemperature: 0.7,
     customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
     maxTokens: 4000,
