@@ -32,6 +32,7 @@ def create_model(
     user: UserBase,
     streaming: bool = False,
     azure: bool = False,
+    force_model: Optional[LLM_Model] = None,
 ) -> WrappedChatOpenAI:
     if (
         not model_settings.custom_api_key
@@ -61,7 +62,7 @@ def create_model(
         "model_kwargs": {"user": user.email, "headers": headers},
     }
 
-    if use_azure:
+    if azure:
         model = WrappedAzureChatOpenAI
         deployment_name = llm_model.replace(".", "")
         kwargs.update(

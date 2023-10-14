@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { createSelectors } from "./helpers";
 import type { ModelSettings } from "../types";
-import { LLAMA2_13B_AS, getDefaultModelSettings } from "../utils/constants";
+import { HERMES_LLAMA2_13B, MISTRAL_7B, getDefaultModelSettings } from "../utils/constants";
 
 const resetters: (() => void)[] = [];
 
@@ -42,7 +42,7 @@ export const useModelSettingsStore = createSelectors(
         partialize: (state) => ({
           modelSettings: {
             ...state.modelSettings,
-            customModelName: LLAMA2_13B_AS,
+            customModelName: HERMES_LLAMA2_13B,
             maxTokens: Math.min(state.modelSettings.maxTokens, 4000),
           },
         }),

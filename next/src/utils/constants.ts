@@ -1,7 +1,7 @@
 import { ENGLISH } from "./languages";
 import type { ModelSettings } from "../types";
 
-export const [CLAUDE2, CODE_LLAMA2_34B, LLAMA2_13B, LLAMA2_70B, GPT_35_TURBO, GPT_35_TURBO_16K, GPT_4, GPT_4_32K, PALM2, PALM2_CODE, HERMES_LLAMA2_13B, AIROBOROS_70B, LLAMA2_7B_AS, LLAMA2_13B_AS, LLAMA2_70B_AS, CODE_LLAMA2_34B_AS] = [
+export const [CLAUDE2, CODE_LLAMA2_34B, LLAMA2_13B, LLAMA2_70B, GPT_35_TURBO, GPT_35_TURBO_16K, GPT_4, GPT_4_32K, PALM2, PALM2_CODE, HERMES_LLAMA2_13B, AIROBOROS_70B, LLAMA2_7B_AS, LLAMA2_13B_AS, LLAMA2_70B_AS, CODE_LLAMA2_34B_AS, MISTRAL_7B, SYNTHIA_70B] = [
   "anthropic/claude-2" as const,
   "meta-llama/codellama-34b-instruct" as const,
   "meta-llama/llama-2-13b-chat" as const,
@@ -18,6 +18,8 @@ export const [CLAUDE2, CODE_LLAMA2_34B, LLAMA2_13B, LLAMA2_70B, GPT_35_TURBO, GP
   "meta-llama/Llama-2-13b-chat-hf" as const,
   "meta-llama/Llama-2-70b-chat-hf" as const,
   "codellama/CodeLlama-34b-Instruct-hf" as const,
+  "mistralai/mistral-7b-instruct" as const,
+  "migtissera/synthia-70b" as const
 ];
 export const GPT_MODEL_NAMES = [GPT_35_TURBO, GPT_4];
 
@@ -29,7 +31,7 @@ export const getDefaultModelSettings = (): ModelSettings => {
     customApiKey: "",
     customApiBase: "",
     language: ENGLISH,
-    customModelName: HERMES_LLAMA2_13B,
+    customModelName: MISTRAL_7B,
     customTemperature: 0.7,
     customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
     maxTokens: 4000,

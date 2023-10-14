@@ -22,6 +22,8 @@ LLM_Model = Literal[
     "meta-llama/Llama-2-13b-chat-hf",
     "meta-llama/Llama-2-70b-chat-hf",
     "codellama/CodeLlama-34b-Instruct-hf",
+    "mistralai/mistral-7b-instruct",
+    "migtissera/synthia-70b",
 ]
 Loop_Step = Literal[
     "start",
@@ -48,11 +50,13 @@ LLM_MODEL_MAX_TOKENS: Dict[LLM_Model, int] = {
     "meta-llama/Llama-2-13b-chat-hf": 4000,
     "meta-llama/Llama-2-70b-chat-hf": 4000,
     "codellama/CodeLlama-34b-Instruct-hf": 4000,
+    "mistralai/mistral-7b-instruct": 4000,
+    "migtissera/synthia-70b": 8000,
 }
 
 
 class ModelSettings(BaseModel):
-    model: LLM_Model = Field(default="meta-llama/Llama-2-13b-chat-hf")
+    model: LLM_Model = Field(default="mistralai/mistral-7b-instruct")
     custom_api_key: Optional[str] = Field(default=None)
     custom_api_base: Optional[str] = Field(default=None)
     temperature: float = Field(default=0.9, ge=0.0, le=1.0)

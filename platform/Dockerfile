@@ -28,7 +28,7 @@ RUN apt-get purge -y \
 
 # Copying actual application
 COPY . /app/src/
-RUN poetry install --only main
+RUN poetry install
 
 CMD ["/usr/local/bin/python", "-m", "reworkd_platform"]
 
